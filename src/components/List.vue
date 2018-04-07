@@ -4,13 +4,9 @@
       <div class="center">{{circleName}}</div>
    </v-ons-toolbar>
    <v-ons-list>
-      <v-ons-list-item v-for="story in stories" 
+      <list-item v-for="story in stories" 
          :key="story.id"
-         modifier="chevron" 
-         tappable
-         @click="select(story)">
-         {{story.summary}}
-      </v-ons-list-item>
+         :story="story"/>
    </v-ons-list>
 </v-ons-page>
 </template>
@@ -18,8 +14,10 @@
 <script>
 import lists from '@/api/lists'
 import circles from '@/api/circles'
+import ListItem from '@/components/ListItem'
 
 export default {
+   components: { ListItem },
    props: {
       listId: String
    },
@@ -74,12 +72,6 @@ export default {
             }
          });
          return name;
-      }
-   },
-
-   methods: {
-      select (story) {
-
       }
    }
 }
