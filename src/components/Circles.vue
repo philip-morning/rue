@@ -4,7 +4,11 @@
       <div class="center">Circles</div>
    </v-ons-toolbar>
    <v-ons-list>
-      <v-ons-list-item v-for="circle in uniqueCircles" :key="_id">
+      <v-ons-list-item v-for="circle in uniqueCircles" 
+         :key="circle._id"
+         modifier="chevron" 
+         tappable
+         @click="select(circle)">
          {{circle.name}}
       </v-ons-list-item>
    </v-ons-list>
@@ -33,6 +37,11 @@ export default {
       circles.get().then(res => {
          this.circles = res.data;
       })
+   },
+   methods: {
+      select: function (circle) {
+         this.$router.push(`/lists/${circle._id}`);
+      }
    }
 }
 </script>
