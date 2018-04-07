@@ -5,14 +5,26 @@
 	</v-ons-toolbar>
 	<v-ons-card>
 		<div class="content">
-			<v-ons-row>{{msg}}</v-ons-row>
-			<v-ons-row>
-				<v-ons-input v-model="username" placeholder="Email address" type="text"/>
-			</v-ons-row>
-			<v-ons-row>
-				<v-ons-input v-model="password" placeholder="Secret password" type="password"/>
-			</v-ons-row>
-			<v-ons-button @click="signin" modifier="large">Sign in</v-ons-button>
+			<div>Please sign in with your Circle Blvd info:</div>
+			<form>
+				<v-ons-input 
+					v-model="username" 
+					placeholder="Email address" 
+					type="text"/>
+				<v-ons-input 
+					v-model="password" 
+					placeholder="Secret password" 
+					type="password"/>
+				<div v-if="!working">
+					<v-ons-button 
+						@click="signin"
+						class="signin" 
+						modifier="large">Sign in</v-ons-button>
+				</div>
+				<div v-else>
+					<v-ons-progress-circular indeterminate></v-ons-progress-circular>
+				</div>
+			</form>
 		</div>
 	</v-ons-card>
 </v-ons-page>
@@ -25,9 +37,9 @@ export default {
 	name: 'HelloWorld',
 	data () {
 		return {
+			working: null,
 			username: null,
-			password: null,
-			msg: 'Please sign in'
+			password: null
 		}
 	},
 	created () {
@@ -35,9 +47,11 @@ export default {
 	},
 	methods: {
 		signin: function () {
+			this.working = true;
 			auth.signin(this.username, this.password)
 			.then(res => {
 				this.msg = res.data;
+				this.$router.push('/circles');
 			})
 		}
 	}
@@ -45,4 +59,13 @@ export default {
 </script>
 
 <style scoped>
+.content,
+form {
+	display: flex;
+	flex-direction: column;
+}
+form, 
+.signin {
+	margin-top: 1em;
+}
 </style>
