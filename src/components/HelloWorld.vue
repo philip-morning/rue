@@ -1,14 +1,21 @@
 <template>
-	<div>
-		{{msg}}
-		<div>
-			<input v-model="username" type="text"/>
+<v-ons-page>
+	<v-ons-toolbar>
+		<div class="center">Rue</div>
+	</v-ons-toolbar>
+	<v-ons-card>
+		<div class="content">
+			<v-ons-row>{{msg}}</v-ons-row>
+			<v-ons-row>
+				<v-ons-input v-model="username" placeholder="Email address" type="text"/>
+			</v-ons-row>
+			<v-ons-row>
+				<v-ons-input v-model="password" placeholder="Secret password" type="password"/>
+			</v-ons-row>
+			<v-ons-button @click="signin" modifier="large">Sign in</v-ons-button>
 		</div>
-		<div>
-			<input v-model="password" type="password"/>
-		</div>
-		<button @click="signin">Sign in</button>
-	</div>
+	</v-ons-card>
+</v-ons-page>
 </template>
 
 <script>
