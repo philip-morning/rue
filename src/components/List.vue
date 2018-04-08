@@ -1,6 +1,7 @@
 <template>
 <v-ons-page>
    <v-ons-toolbar>
+      <v-ons-back-button @click.prevent="$router.go(-1)"/>
       <div class="center">{{circleName}}</div>
    </v-ons-toolbar>
    <v-ons-list>

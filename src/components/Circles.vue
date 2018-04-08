@@ -1,6 +1,7 @@
 <template>
 <v-ons-page>
    <v-ons-toolbar>
+      <v-ons-back-button @click.prevent="$router.go(-1)"/>
       <div class="center">Circles</div>
    </v-ons-toolbar>
    <v-ons-list>
@@ -17,6 +18,7 @@
 
 <script>
 import circles from '@/api/circles'
+import List from '@/components/List'
 
 export default {
    data () {
