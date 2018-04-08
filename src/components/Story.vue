@@ -49,7 +49,8 @@ export default {
             summary: null,
             description: null,
             isDeadline: false,
-            isNextMeeting: false
+            isNextMeeting: false,
+            status: ""
          },
          statusItems: [{
             text: "Help?", value: "sad" },{
