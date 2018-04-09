@@ -10,7 +10,8 @@
 				<v-ons-input 
 					v-model="username" 
 					placeholder="Email address" 
-					type="text"/>
+					type="text"
+					autocapitalize="none"/>
 				<v-ons-input 
 					v-model="password" 
 					placeholder="Secret password" 
