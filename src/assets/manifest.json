@@ -1,0 +1,15 @@
+{
+	"short_name": "Circle St.",
+	"name": "Circle St.",
+	"icons": [
+	 {
+		"src":"assets/logo-192.png",
+		"sizes": "192x192",
+		"type": "image/png"
+	 }
+	],
+	"start_url": "/",
+	"background_color": "white",
+	"theme_color": "#006688",
+	"display": "standalone"
+}
