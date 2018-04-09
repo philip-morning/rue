@@ -6,10 +6,12 @@
 
       <meta name="mobile-web-app-capable" content="yes">
       <meta name="apple-mobile-web-app-capable" content="yes">
-      <meta name="apple-mobile-web-app-title" content="Circle.St">
+      <meta name="apple-mobile-web-app-title" content="Circle St.">
+
+      <meta name="theme-color" content="#006688">
 
       <link rel="manifest" href="/static/manifest.json">
-      <title>rue</title>
+      <title>Circle St.</title>
    </head>
    <body>
       <div id="app"></div>
@@ -20,7 +22,7 @@
    // From the Google dev demo:
    if ('serviceWorker' in navigator) {
       console.log("Will the service worker register?");
-      navigator.serviceWorker.register('service-worker.js')
+      navigator.serviceWorker.register('/static/service-worker.js')
       .then(function(reg){
          console.log("Yes, it did.");
       }).catch(function(err) {
