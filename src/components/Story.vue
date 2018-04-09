@@ -5,14 +5,18 @@
       <div class="center">{{storyType}}</div>
    </v-ons-toolbar>
    <div class="content">
-      <h3>{{story.summary}}</h3>
+      <v-ons-input v-model="summary" type="text"/>
+      <div :class="descriptionClass"
+         contenteditable="yes" 
+         data-placeholder="Description"
+         @input="updateDescription">{{initialStory.description}}</div>
 
       <v-ons-row class="owner-panel">
          <v-ons-col class="owner">
-            <label>@{{story.owner}}</label> 
+            <v-ons-input v-model="owner" placeholder="Owner" type="text"/>
          </v-ons-col>
          <v-ons-col class="status">
-            <v-ons-select v-model="story.status">
+            <v-ons-select v-model="status">
                <option v-for="item in statusItems" :value="item.value" :key="item.value">
                   {{ item.text }}
                </option>
@@ -20,19 +24,21 @@
          </v-ons-col>
       </v-ons-row>
 
-      <p>{{story.description}}</p>
 
       <label>Comments:</label>
-      <p v-for="comment in story.comments" :key="comment.timestamp">
+      <p v-for="comment in comments" :key="comment.timestamp">
          {{comment.createdBy.name}}, 
          {{new Date(comment.timestamp).toLocaleString()}}: 
          {{comment.text}}
       </p>
 
-      <p v-if="story && story.createdBy">
-         {{storyType}} created by {{story.createdBy.name}}
+      <p v-if="createdBy">
+         {{storyType}} created by {{createdBy.name}}
       </p>
    </div>
+   <v-ons-fab position="bottom right" @click="save">
+      <v-ons-icon icon="save"></v-ons-icon>
+   </v-ons-fab>
 </v-ons-page>
 </template>
 
@@ -45,25 +51,43 @@ export default {
    },
    data () {
       return {
-         story: {
-            summary: null,
-            description: null,
-            isDeadline: false,
-            isNextMeeting: false,
-            status: ""
-         },
+         comments: [],
+         createdBy: null,
+         description: "",
+         isDeadline: false,
+         isNextMeeting: false,
+         isSaving: false,
+         owner: "",
+         status: "",
          statusItems: [{
             text: "Help?", value: "sad" },{
-            text: "Uncommitted", value: "" },{
-            text: "Will do", value: "assigned" },{
-            text: "On it", value: "active" },{
+            text: "New", value: "" },{
+            text: "Committed", value: "assigned" },{
+            text: "In progress", value: "active" },{
             text: "Done", value: "done"
-         }]
+         }],
+         initialStory: {},
+         summary: null
       }
    },
    computed: {
+      descriptionClass () {
+         if (!this.description) {
+            return 'empty-description'
+         }
+      },
+      owner () {
+         if (this.owner) {
+            let val = `@${this.owner}`;
+            if (!this.status) {
+               val = val + "?";
+            }
+            return val;
+         }
+         return "Unassigned"
+      },
       storyType () {
-         if (this.story.isNextMeeting || this.story.isDeadline) {
+         if (this.isNextMeeting || this.isDeadline) {
             return "Milepost"
          }
          else {
@@ -74,18 +98,54 @@ export default {
 
    created () {
       stories.get(this.storyId).then(res => {
-         this.story = res.data;
+         var story = res.data;
+
+         this.initialStory = res.data;
+         this.comments = story.comments;
+         this.createdBy = story.createdBy;
+         this.description = story.description;
+         this.isDeadline = story.isDeadline;
+         this.isNextMeeting = story.isNextMeeting;
+         this.owner = story.owner;
+         this.status = story.status;
+         this.summary = story.summary;
       });
+   },
+
+   methods: {
+      save: function () {
+         var story = this.initialStory;
+
+         story.description = this.description;
+         story.owner = this.owner;
+         story.status = this.status;
+         story.summary = this.summary;
+
+         stories.put(story).then(() => {
+            this.$router.go(-1);
+         });
+      },
+      updateDescription: function (e) {
+         this.description = e.target.innerText;
+      }
    }
 }
 </script>
 
 <style scoped>
+[contenteditable=true]:empty:before {
+  content: attr(data-placeholder);
+  display: block; /* For Firefox */
+}
+
 .content {
    text-align: left;
    display: flex;
    flex-direction: column;
    padding: 2ex;
+}
+.empty-description {
+   color: #999;
 }
 .owner-panel {
    display: flex;

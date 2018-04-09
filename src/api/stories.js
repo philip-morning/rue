@@ -18,5 +18,8 @@ export default {
          });
          return nextId ? move : savedStory;
       });
+   },
+   put: function (story) {
+      return http.put('/data/story', story);
    }
 }
