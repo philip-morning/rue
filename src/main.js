@@ -14,8 +14,11 @@ Vue.use(VueOnsen)
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+   el: '#app',
+   router,
+   components: { App },
+   template: '<App/>',
+   beforeCreate () {
+      this.$ons.enableAutoStatusBarFill()
+   }
 })
