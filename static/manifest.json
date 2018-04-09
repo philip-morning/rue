@@ -3,7 +3,7 @@
 	"name": "Circle St.",
 	"icons": [
 	 {
-		"src":"/static/logo-192.png",
+		"src":"assets/logo-192.png",
 		"sizes": "192x192",
 		"type": "image/png"
 	 }
