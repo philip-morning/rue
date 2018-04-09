@@ -26,7 +26,7 @@ export default {
                return 'circle';
             case 'assigned':
             default:
-               return;
+               return null;
          }
       },
       owner () {

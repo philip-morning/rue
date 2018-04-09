@@ -9,6 +9,9 @@
          :key="story.id"
          :story="story"/>
    </v-ons-list>
+   <v-ons-fab position="bottom right" @click="edit">
+      <v-ons-icon icon="plus"></v-ons-icon>
+   </v-ons-fab>
 </v-ons-page>
 </template>
 
@@ -73,6 +76,12 @@ export default {
             }
          });
          return name;
+      }
+   },
+
+   methods: {
+      edit () {
+         this.$router.push(`/lists/${this.listId}/edit`);
       }
    }
 }
