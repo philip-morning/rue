@@ -76,16 +76,6 @@ export default {
             return 'empty-description'
          }
       },
-      owner () {
-         if (this.owner) {
-            let val = `@${this.owner}`;
-            if (!this.status) {
-               val = val + "?";
-            }
-            return val;
-         }
-         return "Unassigned"
-      },
       storyType () {
          if (this.isNextMeeting || this.isDeadline) {
             return "Milepost"

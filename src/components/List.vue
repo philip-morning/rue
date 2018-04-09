@@ -5,9 +5,10 @@
       <div class="center">{{circleName}}</div>
    </v-ons-toolbar>
    <v-ons-list>
-      <list-item v-for="story in stories" 
+      <list-item v-for="(story, index) in stories" 
          :key="story.id"
-         :story="story"/>
+         :story="story"
+         :index="index"/>
    </v-ons-list>
    <v-ons-fab position="bottom right" @click="edit">
       <v-ons-icon icon="plus"></v-ons-icon>
