@@ -15,7 +15,8 @@
 				<v-ons-input 
 					v-model="password" 
 					placeholder="Secret password" 
-					type="password"/>
+					type="password"
+					@keyup.enter="signin"/>
 				<div v-if="!working">
 					<v-ons-button 
 						@click="signin"
