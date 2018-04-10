@@ -33,6 +33,7 @@
 
 <script>
 import auth from '@/api/auth.js'
+import user from '@/api/user.js'
 
 export default {
 	name: 'HelloWorld',
@@ -44,7 +45,14 @@ export default {
 		}
 	},
 	created () {
-		
+		user.get().then(res => {
+			if (res.data) {
+				this.$router.push('/circles');
+			}
+		})
+		.catch(err => {
+			// This is fine.
+		})
 	},
 	methods: {
 		signin: function () {
