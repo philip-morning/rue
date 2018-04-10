@@ -1,7 +1,7 @@
 <template>
 <v-ons-page>
    <v-ons-toolbar>
-      <v-ons-back-button @click.prevent="$router.go(-1)"/>
+      <v-ons-back-button @click.prevent="$router.push({ path: '/', query: { stay: true }})"/>
       <div class="center">Circles</div>
    </v-ons-toolbar>
    <v-ons-list>

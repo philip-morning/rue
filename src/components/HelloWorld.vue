@@ -37,6 +37,9 @@ import user from '@/api/user.js'
 
 export default {
 	name: 'HelloWorld',
+	props: {
+		stay: Boolean
+	},
 	data () {
 		return {
 			working: null,
@@ -45,6 +48,11 @@ export default {
 		}
 	},
 	created () {
+		if (this.$route.query.stay) {
+			// Stay
+			return;
+		}
+
 		user.get().then(res => {
 			if (res.data) {
 				this.$router.push('/circles');
