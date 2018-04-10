@@ -1,7 +1,6 @@
 import axios from 'axios'
-import config from '@/config.js'
 
 export default axios.create({
-   baseURL: config.server,
+   baseURL: process.env.SERVER_URL,
    withCredentials: true
 });
