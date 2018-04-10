@@ -1,7 +1,7 @@
 <template>
 <v-ons-page>
 	<v-ons-toolbar>
-		<div class="center">Rue</div>
+		<div class="center">Circle St.</div>
 	</v-ons-toolbar>
 	<v-ons-card>
 		<div class="content">
