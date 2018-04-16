@@ -123,9 +123,7 @@ export default {
          });
 
          // Work around the Vue rendering engine
-         this.$nextTick(() => {
-            this.nextId = this.rawStories[this.initialStory.id].nextId;
-         });
+         this.$emit('update:all-stories');
 
          return stories;
       },
@@ -160,6 +158,12 @@ export default {
 
          lists.getFirstStory(projectId).then(res => {
             this.firstStory = res.data;
+         });
+      });
+
+      this.$on('update:all-stories', () => {
+         this.$nextTick(() => {
+            this.nextId = this.rawStories[this.initialStory.id].nextId;
          });
       });
    },
