@@ -24,6 +24,14 @@
          </v-ons-col>
       </v-ons-row>
 
+      <v-ons-row>
+         <label>Next task:</label>
+         <v-ons-select v-model="nextId">
+            <option v-for="story in allStories" :value="story.id" :key="story.id">
+               {{ story.summary }}
+            </option>
+         </v-ons-select>
+      </v-ons-row>
 
       <label>Comments:</label>
       <p v-for="comment in comments" :key="comment.timestamp">
@@ -49,6 +57,8 @@
 <script>
 import stories from '@/api/stories'
 import archives from '@/api/archives'
+import lists from '@/api/lists'
+import moves from '@/api/moves'
 
 export default {
    props: {
@@ -72,7 +82,11 @@ export default {
             text: "Done", value: "done"
          }],
          initialStory: {},
-         summary: null
+         summary: null,
+
+         nextId: "",
+         rawStories: null,
+         firstStory: null
       }
    },
    computed: {
@@ -88,6 +102,39 @@ export default {
          else {
             return "Task"
          }
+      },
+
+      allStories () {
+         if (!this.firstStory || !this.rawStories)
+            return [];
+
+         var stories = [];
+         var next = this.firstStory;
+
+         while (next) {
+            let story = this.rawStories[next.id];
+            stories.push(story);
+            next = this.rawStories[story.nextId];
+         }
+
+         stories.push({
+            id: "last-" + this.firstStory.projectId,
+            summary: "Last"
+         });
+
+         // Work around the Vue rendering engine
+         this.$nextTick(() => {
+            this.nextId = this.rawStories[this.initialStory.id].nextId;
+         });
+
+         return stories;
+      },
+
+      isMovePending() {
+         if (!this.rawStories || !this.initialStory)
+            return false;
+
+         return this.nextId !== this.rawStories[this.initialStory.id].nextId;
       }
    },
 
@@ -104,6 +151,16 @@ export default {
          this.owner = story.owner;
          this.status = story.status;
          this.summary = story.summary;
+
+         var projectId = story.projectId;
+
+         lists.get(projectId).then(res => {
+            this.rawStories = res.data;            
+         });
+
+         lists.getFirstStory(projectId).then(res => {
+            this.firstStory = res.data;
+         });
       });
    },
 
@@ -128,7 +185,15 @@ export default {
       },
 
       save: function () {
-         this.saveStory(this.initialStory).then(this.back);
+         this.saveStory(this.initialStory).then(res => {
+            if (this.isMovePending) {
+               var story = res.data;
+               moves.post(story, this.nextId).then(this.back);
+            }
+            else {
+               this.back();
+            }
+         });
       },
       updateDescription: function (e) {
          this.description = e.target.innerText;
@@ -167,5 +232,8 @@ export default {
 }
 .status {
    width: 100%;
+}
+label {
+   margin-top: 0.5ex;
 }
 </style>
