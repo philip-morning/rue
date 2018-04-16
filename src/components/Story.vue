@@ -39,11 +39,16 @@
    <v-ons-fab position="bottom right" @click="save">
       <v-ons-icon icon="save"></v-ons-icon>
    </v-ons-fab>
+
+   <v-ons-fab position="bottom left" @click="archive">
+      <v-ons-icon icon="archive"></v-ons-icon>
+   </v-ons-fab>
 </v-ons-page>
 </template>
 
 <script>
 import stories from '@/api/stories'
+import archives from '@/api/archives'
 
 export default {
    props: {
@@ -103,17 +108,27 @@ export default {
    },
 
    methods: {
-      save: function () {
-         var story = this.initialStory;
+      archive: function () {
+         this.saveStory(this.initialStory).then(res => {
+            archives.post(res.data).then(this.back);
+         });
+      },
 
+      back: function () {
+         this.$router.go(-1);
+      },
+
+      saveStory: function (story) {
          story.description = this.description;
          story.owner = this.owner;
          story.status = this.status;
          story.summary = this.summary;
 
-         stories.put(story).then(() => {
-            this.$router.go(-1);
-         });
+         return stories.put(story);
+      },
+
+      save: function () {
+         this.saveStory(this.initialStory).then(this.back);
       },
       updateDescription: function (e) {
          this.description = e.target.innerText;
